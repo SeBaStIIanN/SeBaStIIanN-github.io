@@ -111,7 +111,7 @@
                         let suffix = displayHour >= 5 && displayHour < 12 ? "AM" : "PM";
                         if (displayHour === 0) displayHour = 12;
                         else if (displayHour > 12) displayHour -= 12;
-                        return `${displayHour}:00 - ${displayHour}:59 ${suffix}`;
+                        return ${displayHour}:00 - ${displayHour}:59 ${suffix};
                     }
 
                     // Cargar las actividades y estados de LocalStorage si existen
@@ -130,15 +130,15 @@
                             let activityInput = document.createElement('input');
                             activityInput.type = 'text';
                             activityInput.placeholder = 'Escribe tu actividad';
-                            activityInput.id = `activity-${hour}`;
+                            activityInput.id = activity-${hour};
 
                             let doneCheckbox = document.createElement('input');
                             doneCheckbox.type = 'checkbox';
-                            doneCheckbox.id = `done-${hour}`;
+                            doneCheckbox.id = done-${hour};
 
                             // Cargar los datos de LocalStorage si existen
-                            let savedActivity = localStorage.getItem(`activity-${hour}`);
-                            let isChecked = localStorage.getItem(`done-${hour}`) === 'true';
+                            let savedActivity = localStorage.getItem(activity-${hour});
+                            let isChecked = localStorage.getItem(done-${hour}) === 'true';
 
                             if (savedActivity) {
                                 activityInput.value = savedActivity;
@@ -147,17 +147,6 @@
 
                             // Escuchar cambios en las casillas de verificación
                             doneCheckbox.addEventListener('change', updateProgress);
-
-                            // Escuchar la tecla Enter en los campos de texto
-                            activityInput.addEventListener('keydown', function (event) {
-                                if (event.key === 'Enter') {
-                                    // Buscar el siguiente campo de texto y mover el foco
-                                    const nextInput = document.querySelector(`#activity-${hour + 1}`);
-                                    if (nextInput) {
-                                        nextInput.focus();
-                                    }
-                                }
-                            });
 
                             // Agregar los elementos a la fila
                             activityCell.appendChild(activityInput);
@@ -173,11 +162,11 @@
                     // Guardar la agenda en LocalStorage
                     function saveAgenda() {
                         for (let hour = 5; hour <= 28; hour++) {
-                            let activity = document.getElementById(`activity-${hour}`).value;
-                            let done = document.getElementById(`done-${hour}`).checked;
+                            let activity = document.getElementById(activity-${hour}).value;
+                            let done = document.getElementById(done-${hour}).checked;
 
-                            localStorage.setItem(`activity-${hour}`, activity);
-                            localStorage.setItem(`done-${hour}`, done);
+                            localStorage.setItem(activity-${hour}, activity);
+                            localStorage.setItem(done-${hour}, done);
                         }
                         alert("Agenda guardada!");
                     }
@@ -188,7 +177,7 @@
                         let completedTasks = 0;
 
                         for (let hour = 5; hour <= 28; hour++) {
-                            let done = document.getElementById(`done-${hour}`).checked;
+                            let done = document.getElementById(done-${hour}).checked;
                             if (done) {
                                 completedTasks++;
                             }
