@@ -24,6 +24,10 @@
             text-align: center;
             color: #ccc; /* Título gris */
         }
+        h2 {
+            color: #ccc; /* Subtítulos grises */
+            margin-top: 30px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -54,6 +58,16 @@
         }
         tr:nth-child(odd) td {
             background-color: #444; /* Fondo alterno gris oscuro */
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #555;
+            border-radius: 5px;
+            background-color: #444; /* Fondo gris oscuro para textarea */
+            color: white;
+            font-size: 16px;
         }
         .submit-button {
             display: block;
@@ -179,7 +193,11 @@
                             localStorage.setItem(`activity-${hour}`, activity);
                             localStorage.setItem(`done-${hour}`, done);
                         }
-                        alert("Agenda guardada!");
+
+                        // Guardar notas importantes
+                        saveNotes();
+
+                        alert("Agenda y notas guardadas!");
                     }
 
                     // Actualizar el progreso de tareas completadas
@@ -203,8 +221,27 @@
                         }
                     }
 
+                    // Guardar notas en localStorage
+                    function saveNotes() {
+                        for (let month = 1; month <= 12; month++) {
+                            let notes = document.getElementById(`notes-month-${month}`).value;
+                            localStorage.setItem(`notes-month-${month}`, notes);
+                        }
+                    }
+
+                    // Cargar notas desde localStorage
+                    function loadNotes() {
+                        for (let month = 1; month <= 12; month++) {
+                            let savedNotes = localStorage.getItem(`notes-month-${month}`);
+                            if (savedNotes) {
+                                document.getElementById(`notes-month-${month}`).value = savedNotes;
+                            }
+                        }
+                    }
+
                     // Cargar los datos al iniciar la página
                     loadAgenda();
+                    loadNotes(); // Cargar las notas al iniciar
 
                     // Guardar la agenda al hacer clic en el botón
                     document.querySelector('.submit-button').addEventListener('click', function () {
@@ -213,8 +250,29 @@
                 });
             </script>
         </table>
+
+        <!-- Nueva sección para agregar notas importantes del mes -->
+        <h2>Notas Importantes del Mes</h2>
+        <div id="monthly-notes">
+            <!-- Sección para notas de cada mes -->
+            <label for="notes-month-1">Enero:</label>
+            <textarea id="notes-month-1" placeholder="Escribe tus notas para enero"></textarea>
+
+            <label for="notes-month-2">Febrero:</label>
+            <textarea id="notes-month-2" placeholder="Escribe tus notas para febrero"></textarea>
+
+            <label for="notes-month-3">Marzo:</label>
+            <textarea id="notes-month-3" placeholder="Escribe tus notas para marzo"></textarea>
+
+            <!-- Agregar más meses según sea necesario -->
+            <!-- Aquí van los demás meses -->
+            
+            <label for="notes-month-12">Diciembre:</label>
+            <textarea id="notes-month-12" placeholder="Escribe tus notas para diciembre"></textarea>
+        </div>
+
         <br>
-        <button class="submit-button">Guardar Agenda</button>
+        <button class="submit-button">Guardar Agenda y Notas</button>
     </div>
 </body>
 </html>
