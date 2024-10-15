@@ -1,4 +1,4 @@
-<!DOCTYPE html>  
+<!DOCTYPE html> 
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -23,10 +23,6 @@
         h1 {
             text-align: center;
             color: #ccc; /* Título gris */
-        }
-        h2 {
-            color: #ccc; /* Subtítulos grises */
-            margin-top: 30px;
         }
         table {
             width: 100%;
@@ -59,16 +55,6 @@
         tr:nth-child(odd) td {
             background-color: #444; /* Fondo alterno gris oscuro */
         }
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border: 2px solid #555;
-            border-radius: 5px;
-            background-color: #444; /* Fondo gris oscuro para textarea */
-            color: white;
-            font-size: 16px;
-        }
         .submit-button {
             display: block;
             width: 100%;
@@ -99,33 +85,6 @@
         .progress span {
             font-weight: bold;
         }
-
-        /* Estilo para las notas del mes */
-        .month-notes {
-            border: 1px solid #555;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .month-title {
-            background-color: #333; /* Título plegable */
-            color: white;
-            padding: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            user-select: none;
-            border-bottom: 1px solid #555;
-        }
-        .month-content {
-            display: none; /* Ocultar el contenido por defecto */
-            background-color: #444; /* Fondo gris oscuro para el contenido de notas */
-            padding: 15px;
-        }
-        .month-content textarea {
-            width: 100%;
-            height: 80px;
-            margin-top: 10px;
-            padding: 10px;
-        }
     </style>
 </head>
 <body>
@@ -140,70 +99,123 @@
                 <th>Actividad</th>
                 <th>Completado</th>
             </tr>
-        </table>
+            <!-- Generar horas del día de 05:00 AM a 04:00 AM -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    let table = document.querySelector('table');
+                    let progressSpan = document.getElementById('progress-percent');
 
-        <!-- Sección para las notas del mes -->
-        <h2>Notas Importantes del Mes</h2>
-        <div id="monthly-notes">
-            <div class="month-notes">
-                <div class="month-title">Enero</div>
-                <div class="month-content">
-                    <textarea id="notes-month-1" placeholder="Escribe tus notas para enero"></textarea>
-                </div>
-            </div>
-
-            <div class="month-notes">
-                <div class="month-title">Febrero</div>
-                <div class="month-content">
-                    <textarea id="notes-month-2" placeholder="Escribe tus notas para febrero"></textarea>
-                </div>
-            </div>
-
-            <div class="month-notes">
-                <div class="month-title">Marzo</div>
-                <div class="month-content">
-                    <textarea id="notes-month-3" placeholder="Escribe tus notas para marzo"></textarea>
-                </div>
-            </div>
-
-            <!-- Agregar los demás meses de manera similar -->
-        </div>
-
-        <br>
-        <button class="submit-button">Guardar Agenda y Notas</button>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const monthTitles = document.querySelectorAll('.month-title');
-            
-            // Función para desplegar y ocultar las notas del mes
-            monthTitles.forEach(title => {
-                title.addEventListener('click', function () {
-                    const content = this.nextElementSibling;
-                    
-                    // Alternar la visibilidad de las notas
-                    if (content.style.display === "none" || content.style.display === "") {
-                        content.style.display = "block";
-                    } else {
-                        content.style.display = "none";
+                    // Función para convertir la hora al formato deseado
+                    function formatHour(hour) {
+                        let displayHour = hour % 24;
+                        let suffix = displayHour >= 5 && displayHour < 12 ? "AM" : "PM";
+                        if (displayHour === 0) displayHour = 12;
+                        else if (displayHour > 12) displayHour -= 12;
+                        return `${displayHour}:00 - ${displayHour}:59 ${suffix}`;
                     }
+
+                    // Cargar las actividades y estados de LocalStorage si existen
+                    function loadAgenda() {
+                        for (let hour = 5; hour <= 28; hour++) { // De 5:00 AM a 4:00 AM
+                            let row = document.createElement('tr');
+                            let hourCell = document.createElement('td');
+                            let activityCell = document.createElement('td');
+                            let doneCell = document.createElement('td');
+                            
+                            // Formatear las horas correctamente
+                            let formattedHour = formatHour(hour);
+                            hourCell.textContent = formattedHour;
+
+                            // Crear campos para ingresar la actividad y marcarla como completada
+                            let activityInput = document.createElement('input');
+                            activityInput.type = 'text';
+                            activityInput.placeholder = 'Escribe tu actividad';
+                            activityInput.id = `activity-${hour}`;
+
+                            let doneCheckbox = document.createElement('input');
+                            doneCheckbox.type = 'checkbox';
+                            doneCheckbox.id = `done-${hour}`;
+
+                            // Cargar los datos de LocalStorage si existen
+                            let savedActivity = localStorage.getItem(`activity-${hour}`);
+                            let isChecked = localStorage.getItem(`done-${hour}`) === 'true';
+
+                            if (savedActivity) {
+                                activityInput.value = savedActivity;
+                            }
+                            doneCheckbox.checked = isChecked;
+
+                            // Escuchar cambios en las casillas de verificación
+                            doneCheckbox.addEventListener('change', updateProgress);
+
+                            // Escuchar la tecla Enter en los campos de texto
+                            activityInput.addEventListener('keydown', function (event) {
+                                if (event.key === 'Enter') {
+                                    // Buscar el siguiente campo de texto y mover el foco
+                                    const nextInput = document.querySelector(`#activity-${hour + 1}`);
+                                    if (nextInput) {
+                                        nextInput.focus();
+                                    }
+                                }
+                            });
+
+                            // Agregar los elementos a la fila
+                            activityCell.appendChild(activityInput);
+                            doneCell.appendChild(doneCheckbox);
+                            row.appendChild(hourCell);
+                            row.appendChild(activityCell);
+                            row.appendChild(doneCell);
+                            table.appendChild(row);
+                        }
+                        updateProgress(); // Actualizar el progreso inicial
+                    }
+
+                    // Guardar la agenda en LocalStorage
+                    function saveAgenda() {
+                        for (let hour = 5; hour <= 28; hour++) {
+                            let activity = document.getElementById(`activity-${hour}`).value;
+                            let done = document.getElementById(`done-${hour}`).checked;
+
+                            localStorage.setItem(`activity-${hour}`, activity);
+                            localStorage.setItem(`done-${hour}`, done);
+                        }
+                        alert("Agenda guardada!");
+                    }
+
+                    // Actualizar el progreso de tareas completadas
+                    function updateProgress() {
+                        let totalTasks = 24; // 24 horas
+                        let completedTasks = 0;
+
+                        for (let hour = 5; hour <= 28; hour++) {
+                            let done = document.getElementById(`done-${hour}`).checked;
+                            if (done) {
+                                completedTasks++;
+                            }
+                        }
+
+                        let percentCompleted = Math.round((completedTasks / totalTasks) * 100);
+                        progressSpan.textContent = percentCompleted + "%";
+
+                        // Mostrar mensaje si se completa el 100% de la agenda
+                        if (percentCompleted === 100) {
+                            alert("¡Has completado toda tu agenda del día!");
+                        }
+                    }
+
+                    // Cargar los datos al iniciar la página
+                    loadAgenda();
+
+                    // Guardar la agenda al hacer clic en el botón
+                    document.querySelector('.submit-button').addEventListener('click', function () {
+                        saveAgenda();
+                    });
                 });
-            });
-
-            // Inicializar el acordeón ocultando todo el contenido
-            const monthContents = document.querySelectorAll('.month-content');
-            monthContents.forEach(content => {
-                content.style.display = "none"; // Inicialmente, todos ocultos
-            });
-        });
-    </script>
+            </script>
+        </table>
+        <br>
+        <button class="submit-button">Guardar Agenda</button>
+    </div>
 </body>
 </html>
 
-
-            });
-        });
-    </script>
-</body>
-</html>
