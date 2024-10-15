@@ -99,6 +99,33 @@
         .progress span {
             font-weight: bold;
         }
+
+        /* Estilo para las notas del mes */
+        .month-notes {
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .month-title {
+            background-color: #333; /* Título plegable */
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #555;
+        }
+        .month-content {
+            display: none; /* Ocultar el contenido por defecto */
+            background-color: #444; /* Fondo gris oscuro para el contenido de notas */
+            padding: 15px;
+        }
+        .month-content textarea {
+            width: 100%;
+            height: 80px;
+            margin-top: 10px;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -232,43 +259,61 @@
                     // Cargar notas desde localStorage
                     function loadNotes() {
                         for (let month = 1; month <= 12; month++) {
-                            let savedNotes = localStorage.getItem(`notes-month-${month}`);
-                            if (savedNotes) {
-                                document.getElementById(`notes-month-${month}`).value = savedNotes;
+                            let savedNote = localStorage.getItem(`notes-month-${month}`);
+                            if (savedNote) {
+                                document.getElementById(`notes-month-${month}`).value = savedNote;
                             }
                         }
                     }
 
                     // Cargar los datos al iniciar la página
                     loadAgenda();
-                    loadNotes(); // Cargar las notas al iniciar
+                    loadNotes();
 
-                    // Guardar la agenda al hacer clic en el botón
+                    // Guardar la agenda y notas al hacer clic en el botón
                     document.querySelector('.submit-button').addEventListener('click', function () {
                         saveAgenda();
+                    });
+
+                    // Desplegable para las notas del mes
+                    document.querySelectorAll('.month-title').forEach(function (title) {
+                        title.addEventListener('click', function () {
+                            let content = this.nextElementSibling;
+                            content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                        });
                     });
                 });
             </script>
         </table>
 
-        <!-- Nueva sección para agregar notas importantes del mes -->
+        <!-- Sección de notas del mes -->
         <h2>Notas Importantes del Mes</h2>
         <div id="monthly-notes">
-            <!-- Sección para notas de cada mes -->
-            <label for="notes-month-1">Enero:</label>
-            <textarea id="notes-month-1" placeholder="Escribe tus notas para enero"></textarea>
-
-            <label for="notes-month-2">Febrero:</label>
-            <textarea id="notes-month-2" placeholder="Escribe tus notas para febrero"></textarea>
-
-            <label for="notes-month-3">Marzo:</label>
-            <textarea id="notes-month-3" placeholder="Escribe tus notas para marzo"></textarea>
-
-            <!-- Agregar más meses según sea necesario -->
-            <!-- Aquí van los demás meses -->
-            
-            <label for="notes-month-12">Diciembre:</label>
-            <textarea id="notes-month-12" placeholder="Escribe tus notas para diciembre"></textarea>
+            <div class="month-notes">
+                <div class="month-title">Enero</div>
+                <div class="month-content">
+                    <textarea id="notes-month-1" placeholder="Escribe tus notas para enero"></textarea>
+                </div>
+            </div>
+            <div class="month-notes">
+                <div class="month-title">Febrero</div>
+                <div class="month-content">
+                    <textarea id="notes-month-2" placeholder="Escribe tus notas para febrero"></textarea>
+                </div>
+            </div>
+            <div class="month-notes">
+                <div class="month-title">Marzo</div>
+                <div class="month-content">
+                    <textarea id="notes-month-3" placeholder="Escribe tus notas para marzo"></textarea>
+                </div>
+            </div>
+            <!-- Repite este bloque para los meses restantes -->
+            <div class="month-notes">
+                <div class="month-title">Diciembre</div>
+                <div class="month-content">
+                    <textarea id="notes-month-12" placeholder="Escribe tus notas para diciembre"></textarea>
+                </div>
+            </div>
         </div>
 
         <br>
