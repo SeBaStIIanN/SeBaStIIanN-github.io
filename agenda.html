@@ -5,7 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Personal 24 Horas</title>
     <style>
-        /* ... estilos previos ... */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #ccc;
+        }
+        h2 {
+            color: #ccc;
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: white;
+            font-size: 18px;
+        }
+        td input[type="text"] {
+            width: 90%;
+            padding: 5px;
+            border: 2px solid #555;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+        }
+        td input[type="checkbox"] {
+            transform: scale(1.5);
+        }
+        td {
+            background-color: #333;
+        }
+        tr:nth-child(odd) td {
+            background-color: #444;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #555;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+            font-size: 16px;
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: #666;
+        }
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: white;
+            z-index: 1000;
+        }
+        .progress span {
+            font-weight: bold;
+        }
+        .month-notes {
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .month-title {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #555;
+        }
+        .month-content {
+            display: none;
+            background-color: #444;
+            padding: 15px;
+        }
+        .month-content textarea {
+            width: 100%;
+            height: 80px;
+            margin-top: 10px;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -24,72 +142,84 @@
 
         <h2>Notas Importantes del Mes</h2>
         <div id="monthly-notes">
+            <!-- Sección de notas para todos los meses -->
             <div class="month-notes">
                 <div class="month-title">Enero</div>
                 <div class="month-content">
                     <textarea id="notes-month-1" placeholder="Escribe tus notas para enero"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Febrero</div>
                 <div class="month-content">
                     <textarea id="notes-month-2" placeholder="Escribe tus notas para febrero"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Marzo</div>
                 <div class="month-content">
                     <textarea id="notes-month-3" placeholder="Escribe tus notas para marzo"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Abril</div>
                 <div class="month-content">
                     <textarea id="notes-month-4" placeholder="Escribe tus notas para abril"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Mayo</div>
                 <div class="month-content">
                     <textarea id="notes-month-5" placeholder="Escribe tus notas para mayo"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Junio</div>
                 <div class="month-content">
                     <textarea id="notes-month-6" placeholder="Escribe tus notas para junio"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Julio</div>
                 <div class="month-content">
                     <textarea id="notes-month-7" placeholder="Escribe tus notas para julio"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Agosto</div>
                 <div class="month-content">
                     <textarea id="notes-month-8" placeholder="Escribe tus notas para agosto"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Septiembre</div>
                 <div class="month-content">
                     <textarea id="notes-month-9" placeholder="Escribe tus notas para septiembre"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Octubre</div>
                 <div class="month-content">
                     <textarea id="notes-month-10" placeholder="Escribe tus notas para octubre"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Noviembre</div>
                 <div class="month-content">
                     <textarea id="notes-month-11" placeholder="Escribe tus notas para noviembre"></textarea>
                 </div>
             </div>
+
             <div class="month-notes">
                 <div class="month-title">Diciembre</div>
                 <div class="month-content">
@@ -97,7 +227,7 @@
                 </div>
             </div>
         </div>
-        
+
         <button class="submit-button">Guardar Agenda y Notas</button>
     </div>
 
@@ -105,7 +235,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const monthTitles = document.querySelectorAll('.month-title');
             
-            // Desplegar y ocultar las notas del mes
             monthTitles.forEach(title => {
                 title.addEventListener('click', function () {
                     const content = this.nextElementSibling;
@@ -115,10 +244,11 @@
 
             const monthContents = document.querySelectorAll('.month-content');
             monthContents.forEach(content => {
-                content.style.display = "none"; 
+                content.style.display = "none";
             });
         });
     </script>
 </body>
 </html>
+
 
