@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -135,6 +135,16 @@
                             }
                             doneCheckbox.checked = isChecked;
 
+                            // Detectar cuando el usuario presiona "Enter" y mover el foco al siguiente campo
+                            activityInput.addEventListener('keydown', function(event) {
+                                if (event.key === 'Enter') {
+                                    let nextActivityInput = document.getElementById(`activity-${hour + 1}`);
+                                    if (nextActivityInput) {
+                                        nextActivityInput.focus();
+                                    }
+                                }
+                            });
+
                             // Escuchar cambios en las casillas de verificación
                             doneCheckbox.addEventListener('change', updateProgress);
 
@@ -197,3 +207,4 @@
     </div>
 </body>
 </html>
+
